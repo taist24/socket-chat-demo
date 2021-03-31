@@ -2,7 +2,11 @@ const app = require("express")();
 const path = require("path");
 const { v4: uuidv4 } = require("uuid");
 const httpServer = require("http").Server(app);
-const io = require("socket.io")(httpServer);
+const io = require("socket.io")(httpServer, {
+  cors: {
+    origin: "*",
+  },
+});
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
