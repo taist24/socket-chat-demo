@@ -12,9 +12,9 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-io.engine.generateId = function (req) {
-  return uuidv4();
-};
+// io.engine.generateId = function (req) {
+//   return uuidv4();
+// };
 
 // For authenticating socket
 // io.use((socket, next) => {
@@ -27,13 +27,12 @@ io.engine.generateId = function (req) {
 //   next(err);
 // });
 
-io.on("connection", async function (socket) {
+io.on("connection", function (socket) {
   console.log(`User: ${socket.id} = ${socket.client.id} connected`);
-
-  socket.broadcast.emit("client-ids", [...(await io.allSockets())]);
 
   socket.on("send-message", function (data) {
     console.log(data);
+    socket.broadcast.emit("new-message", data);
   });
 });
 
